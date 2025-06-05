@@ -5,26 +5,24 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { 
   BookOpen, 
   Users, 
-  Award, 
   BarChart3, 
   Settings, 
   Menu,
   Home,
-  Calendar,
-  FileText,
-  Bell
+  DollarSign,
+  Briefcase,
+  Bell,
+  User
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
-  { name: "Courses", href: "/courses", icon: BookOpen },
-  { name: "Users", href: "/users", icon: Users },
-  { name: "Analytics", href: "/analytics", icon: BarChart3 },
-  { name: "Calendar", href: "/calendar", icon: Calendar },
-  { name: "Reports", href: "/reports", icon: FileText },
-  { name: "Settings", href: "/settings", icon: Settings },
+  { name: "People", href: "/users", icon: Users },
+  { name: "Hiring", href: "/job-posting", icon: Briefcase },
+  { name: "Salary", href: "/salary", icon: DollarSign },
+  { name: "Reviews", href: "/reviews", icon: BarChart3 },
 ];
 
 interface DashboardLayoutProps {
@@ -36,11 +34,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const location = useLocation();
 
   const Sidebar = ({ mobile = false }: { mobile?: boolean }) => (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-blue-600 text-white">
       {/* Logo */}
-      <div className="flex items-center space-x-2 p-6 border-b">
-        <BookOpen className="h-8 w-8 text-blue-600" />
-        <span className="text-xl font-bold text-gray-900">TrainingHub</span>
+      <div className="flex items-center space-x-2 p-6">
+        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+          <span className="text-blue-600 font-bold text-lg">G</span>
+        </div>
+        <span className="text-xl font-semibold">GIGFLOWW</span>
       </div>
 
       {/* Navigation */}
@@ -52,10 +52,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               key={item.name}
               to={item.href}
               className={cn(
-                "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                "flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors",
                 isActive
-                  ? "bg-blue-100 text-blue-700"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  ? "bg-blue-700 text-white"
+                  : "text-blue-100 hover:bg-blue-700 hover:text-white"
               )}
               onClick={() => mobile && setSidebarOpen(false)}
             >
@@ -65,38 +65,25 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           );
         })}
       </nav>
-
-      {/* User Section */}
-      <div className="p-3 border-t">
-        <div className="flex items-center space-x-3 p-3 rounded-md bg-gray-50">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-medium">AD</span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900">Admin User</p>
-            <p className="text-xs text-gray-500">admin@traininghub.com</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 lg:bg-white lg:border-r lg:border-gray-200">
+      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0">
         <Sidebar />
       </div>
 
       {/* Mobile Sidebar */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <SheetContent side="left" className="p-0 w-64">
+        <SheetContent side="left" className="p-0 w-64 bg-blue-600">
           <Sidebar mobile />
         </SheetContent>
       </Sheet>
 
       {/* Main Content */}
-      <div className="lg:pl-64">
+      <div className="lg:pl-64 flex-1">
         {/* Top Navigation */}
         <div className="bg-white border-b border-gray-200 px-4 lg:px-6">
           <div className="flex items-center justify-between h-16">
@@ -111,9 +98,16 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="relative">
                 <Bell className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
               </Button>
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 text-gray-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">Admin User</span>
+              </div>
               <Link to="/">
                 <Button variant="outline" size="sm">
                   Back to Home
