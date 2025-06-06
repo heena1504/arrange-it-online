@@ -67,8 +67,8 @@ const Register = () => {
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-50 to-white items-center justify-center p-12">
           <div className="max-w-md">
             <img 
-              src="/lovable-uploads/8095bb5f-cf16-4ddb-8d06-384d1f8b2256.png" 
-              alt="Team collaboration" 
+              src="https://thumbs.dreamstime.com/z/business-teamwork-joining-hands-team-spirit-collaboration-concept-business-teamwork-joining-hands-team-spirit-collaboration-150071339.jpg" 
+              alt="Business teamwork joining hands - team spirit collaboration" 
               className="w-full h-auto rounded-lg shadow-lg"
             />
           </div>
@@ -113,8 +113,8 @@ const Register = () => {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-50 to-white items-center justify-center p-12">
         <div className="max-w-md">
           <img 
-            src="/lovable-uploads/8095bb5f-cf16-4ddb-8d06-384d1f8b2256.png" 
-            alt="Team collaboration" 
+            src="https://thumbs.dreamstime.com/z/business-teamwork-joining-hands-team-spirit-collaboration-concept-business-teamwork-joining-hands-team-spirit-collaboration-150071339.jpg" 
+            alt="Business teamwork joining hands - team spirit collaboration" 
             className="w-full h-auto rounded-lg shadow-lg"
           />
         </div>
