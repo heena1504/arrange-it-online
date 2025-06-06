@@ -12,10 +12,12 @@ import {
   DollarSign,
   Briefcase,
   Bell,
-  User
+  User,
+  LogOut
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -32,6 +34,16 @@ interface DashboardLayoutProps {
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate("/auth");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   const Sidebar = ({ mobile = false }: { mobile?: boolean }) => (
     <div className="flex flex-col h-full bg-blue-600 text-white">
@@ -65,6 +77,17 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           );
         })}
       </nav>
+
+      {/* Sign Out Button */}
+      <div className="p-3">
+        <button
+          onClick={handleSignOut}
+          className="flex items-center w-full px-3 py-3 text-sm font-medium text-blue-100 hover:bg-blue-700 hover:text-white rounded-lg transition-colors"
+        >
+          <LogOut className="mr-3 h-5 w-5" />
+          Sign Out
+        </button>
+      </div>
     </div>
   );
 
@@ -108,11 +131,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 </div>
                 <span className="text-sm font-medium text-gray-700">Admin User</span>
               </div>
-              <Link to="/">
-                <Button variant="outline" size="sm">
-                  Back to Home
-                </Button>
-              </Link>
             </div>
           </div>
         </div>
