@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Users, BookOpen, Award, CheckCircle, Star, PlayCircle } from "lucide-react";
+import { ArrowRight, Users, BookOpen, Award, CheckCircle, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -43,17 +43,13 @@ const Index = () => {
             From hiring to payroll, manage your entire workforce with our comprehensive HR platform. 
             Built for modern teams who value efficiency and transparency.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <Link to="/register">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                Start Free Trial
+                Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline">
-              <PlayCircle className="mr-2 h-5 w-5" />
-              Watch Demo
-            </Button>
           </div>
         </div>
 

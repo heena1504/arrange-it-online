@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -24,7 +23,7 @@ const navigation = [
   { name: "People", href: "/users", icon: Users },
   { name: "Hiring", href: "/job-posting", icon: Briefcase },
   { name: "Salary", href: "/salary", icon: DollarSign },
-  { name: "Reviews", href: "/reviews", icon: BarChart3 },
+  { name: "Analytics", href: "/analytics", icon: BarChart3 },
 ];
 
 interface DashboardLayoutProps {

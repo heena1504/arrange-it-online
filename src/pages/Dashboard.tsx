@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -218,7 +217,9 @@ const Dashboard = () => {
                   <PieChart className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Analytics Dashboard</h3>
                   <p className="text-gray-600 mb-4">View comprehensive reports and analytics</p>
-                  <Button>View Reports</Button>
+                  <Link to="/analytics">
+                    <Button>View Reports</Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
