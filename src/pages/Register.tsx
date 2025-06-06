@@ -4,20 +4,46 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Registration data:", formData);
+    setLoading(true);
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+      if (error) throw error;
+      
+      // Redirect to login after successful registration
+      navigate("/login");
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,37 +69,29 @@ const Register = () => {
               </div>
               <span className="ml-2 text-xl font-semibold text-gray-900">GIGFLOWW</span>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome to GigFloww</h1>
-            <p className="text-gray-600">Create your account to get started</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Create Your Account</h1>
+            <p className="text-gray-600">Enter your details to create a new account</p>
           </div>
 
           <Card className="border-0 shadow-lg">
             <CardContent className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Full Name
-                  </label>
-                  <Input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full h-12 border-gray-300 rounded-lg"
-                    placeholder="Enter your full name"
-                    required
-                  />
+              {error && (
+                <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                  {error}
                 </div>
+              )}
 
+              <form onSubmit={handleRegister} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Work Email
+                    Email Address
                   </label>
                   <Input
                     type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full h-12 border-gray-300 rounded-lg"
-                    placeholder="Enter your work email"
+                    placeholder="Enter your email"
                     required
                   />
                 </div>
@@ -85,10 +103,10 @@ const Register = () => {
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      value={formData.password}
-                      onChange={(e) => setFormData({...formData, password: e.target.value})}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       className="w-full h-12 border-gray-300 rounded-lg pr-12"
-                      placeholder="Create a password"
+                      placeholder="Enter your password"
                       required
                     />
                     <button
@@ -102,26 +120,31 @@ const Register = () => {
                 </div>
 
                 <div>
-                  <label className="flex items-center">
-                    <input type="checkbox" className="w-4 h-4 text-blue-600 border-gray-300 rounded" required />
-                    <span className="ml-2 text-sm text-gray-600">
-                      I agree to the <Link to="/terms" className="text-blue-600 hover:underline">Terms</Link> and{" "}
-                      <Link to="/privacy" className="text-blue-600 hover:underline">Privacy Policy</Link>
-                    </span>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Confirm Password
                   </label>
+                  <Input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full h-12 border-gray-300 rounded-lg"
+                    placeholder="Confirm your password"
+                    required
+                  />
                 </div>
 
                 <Button 
                   type="submit" 
+                  disabled={loading}
                   className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
                 >
-                  Sign Up for GigFloww
+                  {loading ? "Creating Account..." : "Create Account"}
                 </Button>
 
                 <p className="text-center text-sm text-gray-600 mt-6">
                   Already have an account?{" "}
                   <Link to="/login" className="text-blue-600 hover:underline font-medium">
-                    Log in
+                    Sign in
                   </Link>
                 </p>
               </form>

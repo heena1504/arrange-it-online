@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,10 +18,10 @@ const Index = () => {
               <span className="text-xl font-semibold text-gray-900">GIGFLOWW</span>
             </div>
             <div className="flex items-center space-x-4">
-              <Link to="/auth">
+              <Link to="/login">
                 <Button variant="outline">Login</Button>
               </Link>
-              <Link to="/auth">
+              <Link to="/register">
                 <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
               </Link>
             </div>
@@ -45,7 +44,7 @@ const Index = () => {
             Built for modern teams who value efficiency and transparency.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/auth">
+            <Link to="/register">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
                 Start Free Trial
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -204,7 +203,7 @@ const Index = () => {
           <p className="text-xl mb-8 opacity-90">
             Join thousands of companies already using GigFloww to manage their workforce better.
           </p>
-          <Link to="/auth">
+          <Link to="/register">
             <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
               Get Started Today
               <ArrowRight className="ml-2 h-5 w-5" />
