@@ -147,7 +147,7 @@ const Login = () => {
                 </p>
               </form>
             </CardContent>
-          </div>
+          </Card>
         </div>
       </div>
     </div>
