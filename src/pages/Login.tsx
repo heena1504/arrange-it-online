@@ -21,14 +21,28 @@ const Login = () => {
     setError("");
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      if (error) throw error;
-      navigate("/dashboard");
+      
+      if (error) {
+        if (error.message.includes("Email not confirmed")) {
+          setError("Please check your email and click the confirmation link before logging in.");
+        } else if (error.message.includes("Invalid login credentials")) {
+          setError("Invalid email or password. Please check your credentials.");
+        } else {
+          setError(error.message);
+        }
+        return;
+      }
+      
+      if (data.user) {
+        navigate("/dashboard");
+      }
     } catch (error: any) {
-      setError(error.message);
+      setError("An unexpected error occurred. Please try again.");
+      console.error("Login error:", error);
     } finally {
       setLoading(false);
     }
@@ -133,7 +147,7 @@ const Login = () => {
                 </p>
               </form>
             </CardContent>
-          </Card>
+          </div>
         </div>
       </div>
     </div>

@@ -14,12 +14,14 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccess(false);
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -27,24 +29,83 @@ const Register = () => {
       return;
     }
 
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`
         }
       });
+      
       if (error) throw error;
       
-      // Redirect to login after successful registration
-      navigate("/login");
+      if (data.user && !data.session) {
+        // Email confirmation required
+        setSuccess(true);
+      } else if (data.session) {
+        // User is automatically signed in (email confirmation disabled)
+        navigate("/dashboard");
+      }
     } catch (error: any) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
+
+  if (success) {
+    return (
+      <div className="min-h-screen flex">
+        {/* Left side - Image */}
+        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-50 to-white items-center justify-center p-12">
+          <div className="max-w-md">
+            <img 
+              src="/lovable-uploads/8095bb5f-cf16-4ddb-8d06-384d1f8b2256.png" 
+              alt="Team collaboration" 
+              className="w-full h-auto rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+
+        {/* Right side - Success Message */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
+          <div className="w-full max-w-md text-center">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">G</span>
+              </div>
+              <span className="ml-2 text-xl font-semibold text-gray-900">GIGFLOWW</span>
+            </div>
+            
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
+              <h2 className="text-xl font-bold text-green-800 mb-2">Check Your Email!</h2>
+              <p className="text-green-600 mb-4">
+                We've sent a confirmation link to <strong>{email}</strong>. 
+                Please check your email and click the link to activate your account.
+              </p>
+              <p className="text-sm text-green-600">
+                After confirming your email, you can login to your account.
+              </p>
+            </div>
+
+            <Link 
+              to="/login" 
+              className="inline-flex items-center justify-center w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+            >
+              Go to Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex">
@@ -106,8 +167,9 @@ const Register = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full h-12 border-gray-300 rounded-lg pr-12"
-                      placeholder="Enter your password"
+                      placeholder="Enter your password (min 6 characters)"
                       required
+                      minLength={6}
                     />
                     <button
                       type="button"
@@ -130,6 +192,7 @@ const Register = () => {
                     className="w-full h-12 border-gray-300 rounded-lg"
                     placeholder="Confirm your password"
                     required
+                    minLength={6}
                   />
                 </div>
 
